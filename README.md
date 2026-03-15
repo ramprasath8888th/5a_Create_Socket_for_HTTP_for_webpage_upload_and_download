@@ -16,6 +16,66 @@ To write a PYTHON program for socket for HTTP for web page upload and download
 6.Stop the program
 <BR>
 ## Program 
+```
+import socket
+s=socket.socket()
+s.bind(("localhost",8080))
+s.listen(1)
+print("Server running...")
+while True:
+    c,addr=s.accept()
+    req=c.recv(1024).decode()
+    print("Request received")
+    if "GET" in req:
+        f=open("index.html","r")
+        res="HTTP/1.1 200 OK\n\n"+f.read()
+        f.close()
+        c.send(res.encode())
+    elif "POST" in req:
+        data=req.split("\n\n")[1]
+        f=open("upload.txt","w")
+        f.write(data)
+        f.close()
+        c.send("HTTP/1.1 200 OK\n\nFile Uploaded".encode())
+    c.close()
+```
+client.py:
+```
+import socket
+s=socket.socket()
+s.connect(("localhost",8080))
+ch=input("1.Download 2.Upload : ")
+if ch=="1":
+    s.send("GET / HTTP/1.1\nHost: localhost\n\n".encode())
+    print(s.recv(4096).decode())
+else:
+    msg=input("Enter data to upload: ")
+    s.send(("POST / HTTP/1.1\nHost: localhost\n\n"+msg).encode())
+    print(s.recv(1024).decode())
+s.close()
+```
+CN.html
+ <!DOCTYPE html>
+<html>
+<head>
+<title>My Page</title>
+<style>
+body{font-family:Arial;text-align:center;background:#f2f2f2}
+h1{color:blue}
+button{padding:10px;background:green;color:white;border:none}
+</style>
+</head>
+
+<body>
+<h1>Welcome</h1>
+<p>Simple webpage</p>
+
+<button onclick="alert('Hello! Welcome to my webpage.')">Click Me</button>
+
+</body>
+</html>
+
 ## OUTPUT
+
 ## Result
 Thus the socket for HTTP for web page upload and download created and Executed
