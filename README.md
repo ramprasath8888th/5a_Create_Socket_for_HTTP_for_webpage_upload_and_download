@@ -54,6 +54,7 @@ else:
     print(s.recv(1024).decode())
 s.close()
 ```
+```
 CN.html
  <!DOCTYPE html>
 <html>
@@ -74,6 +75,7 @@ button{padding:10px;background:green;color:white;border:none}
 
 </body>
 </html>
+```
 
 ## OUTPUT
 
